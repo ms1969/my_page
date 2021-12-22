@@ -55,3 +55,30 @@ def zodiak_info_num(request, sign_zodiac: int):
         name_zodiac = zodiacs[sign_zodiac - 1]
         redirect_url = reverse('horoscope-name', args=[name_zodiac])
         return HttpResponseRedirect(redirect_url)
+
+
+def type_zodiac_info(request, type_zodiac):
+    description = dict_type.get(type_zodiac)
+    li_elements = ''
+    for sign in description:
+        redirect_path = reverse('horoscope-name', args=[sign])
+        li_elements += f"<li> <a href='{redirect_path}'>{sign.title()} </a> </li>"
+    responce = f"""
+    <ul>
+        {li_elements}
+    <ul/>
+    """
+    return HttpResponse(responce)
+
+def index_type(request):
+        type_zodiacs = list(dict_type)
+        li_elements = ''
+        for sign_type in type_zodiacs:
+            redirect_path = reverse('type-name', args=[sign_type])
+            li_elements += f"<li> <a href='{redirect_path}'>{sign_type.title()} </a> </li>"
+        responce = f"""
+        <ul>
+            {li_elements}
+        <ul/>
+        """
+        return HttpResponse(responce)
