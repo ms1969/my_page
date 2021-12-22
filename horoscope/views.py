@@ -18,6 +18,12 @@ dict_zodiac = {"aries": "Овен - первый знак зодиака, пла
                "pisces": "Рыбы - двенадцатый знак зодиака, планеты Юпитер (с 20 февраля по 20 марта)",
                }
 
+dict_type = {"fire": ["aries", "leo", "sagittarius"],
+             "earth": ["taurus", "virgo", "capricorn"],
+             "air": ["gemini", "libra", "aquarius"],
+             "water": ["cancer", "scorpio", "pisces"]
+             }
+
 
 def index(request):
     zodiacs = list(dict_zodiac)
