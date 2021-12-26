@@ -1,10 +1,3 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-from django.urls import reverse
-from django.template.loader import render_to_string
-
-# Create your views here.
-
 dict_zodiac = {"aries": "Овен - первый знак зодиака, планета Марс (с 21 марта по 20 апреля)",
                "taurus": "Телец - второй знак зодиака, планета Венера (с 21 апреля по 21 мая)",
                "gemini": "Близнецы - третий знак зодиака, планета Меркурий (с 22 мая по 21 июня)",
@@ -25,68 +18,15 @@ dict_type = {"fire": ["aries", "leo", "sagittarius"],
              "water": ["cancer", "scorpio", "pisces"]
              }
 
-
-def index(request):
-    zodiacs = list(dict_zodiac)
-    li_elements = ''
-    for sign in zodiacs:
-        redirect_path = reverse('horoscope-name', args=[sign])
-        li_elements += f"<li> <a href='{redirect_path}'>{sign.title()} </a> </li>"
-    responce = f"""
-    <ul>
-        {li_elements}
-    <ul/>
-    """
-    return HttpResponse(responce)
-
-
-# def zodiak_info(request, sign_zodiac: str):
-#     description = dict_zodiac.get(sign_zodiac)
-#     if description:
-#         return HttpResponse(f'<h2>{description}</h2>')
-#     else:
-#         return HttpResponseNotFound(f"Не найден знак {sign_zodiac}")
-
-
-def zodiak_info(request, sign_zodiac: str):
-    # response = render_to_string('horoscope/info_zodiac.html')
-    return render(request, 'horoscope/info_zodiac.html')
-
-
-def zodiak_info_num(request, sign_zodiac: int):
-    zodiacs = list(dict_zodiac)
-    if sign_zodiac > len(zodiacs) or sign_zodiac == 0:
-        return HttpResponseNotFound(f"Не найден знак c номером {sign_zodiac}")
-    else:
-        name_zodiac = zodiacs[sign_zodiac - 1]
-        redirect_url = reverse('horoscope-name', args=[name_zodiac])
-        return HttpResponseRedirect(redirect_url)
-
-
-def type_zodiac_info(request, type_zodiac):
+def type_zodiac_info_html(type_zodiac):
     description = dict_type.get(type_zodiac)
     li_elements = ''
     for sign in description:
-        redirect_path = reverse('horoscope-name', args=[sign])
+        redirect_path = sign.title()
         li_elements += f"<li> <a href='{redirect_path}'>{sign.title()} </a> </li>"
     response = f"""
     <ul>
         {li_elements}
     <ul/>
     """
-    #return HttpResponse(type_zodiac_info_html(type_zodiac, reverse))
-    return HttpResponse(response)
-
-
-def index_type(request):
-    type_zodiacs = list(dict_type)
-    li_elements = ''
-    for sign_type in type_zodiacs:
-        redirect_path = reverse('type-name', args=[sign_type])
-        li_elements += f"<li> <a href='{redirect_path}'>{sign_type.title()} </a> </li>"
-    response = f"""
-        <ul>
-            {li_elements}
-        <ul/>
-        """
-    return HttpResponse(response)
+    return response

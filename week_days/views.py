@@ -1,11 +1,11 @@
-# from django.shortcuts import render
+from django.shortcuts import render
 # Create your views here.
 
 from django.http import HttpResponse
 
 
 def monday(request):
-    return HttpResponse("Пойти на работу, создать ТРП")
+    return render(request, "week_days/greeting.html")
 
 
 def tuesday(request):
