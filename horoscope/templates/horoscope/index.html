@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+Меню
+
+
+<ul>
+    {% for zodiac in zodiacs %}
+        <li><a href="{% url 'horoscope-name' sign_zodiac=zodiac %}"> {{ zodiac|title }}</a> </li>
+    {% endfor %}
+</ul>

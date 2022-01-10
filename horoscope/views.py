@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
 from django.template.loader import render_to_string
+from dataclasses import dataclass
 
 # Create your views here.
 
@@ -26,18 +27,27 @@ dict_type = {"fire": ["aries", "leo", "sagittarius"],
              }
 
 
+# def index(request):
+#     zodiacs = list(dict_zodiac)
+#     li_elements = ''
+#     for sign in zodiacs:
+#         redirect_path = reverse('horoscope-name', args=[sign])
+#         li_elements += f"<li> <a href='{redirect_path}'>{sign.title()} </a> </li>"
+#     responce = f"""
+#     <ul>
+#         {li_elements}
+#     <ul/>
+#     """
+#     return HttpResponse(responce)
+
 def index(request):
     zodiacs = list(dict_zodiac)
-    li_elements = ''
-    for sign in zodiacs:
-        redirect_path = reverse('horoscope-name', args=[sign])
-        li_elements += f"<li> <a href='{redirect_path}'>{sign.title()} </a> </li>"
-    responce = f"""
-    <ul>
-        {li_elements}
-    <ul/>
-    """
-    return HttpResponse(responce)
+    context = {
+        'zodiacs': zodiacs,
+        'dict_zodiac': dict_zodiac
+    }
+    # f"<li> <a href='{redirect_path}'>{sign.title()} </a> </li>"
+    return render(request, 'horoscope/index.html', context=context)
 
 
 # def zodiak_info(request, sign_zodiac: str):
@@ -47,10 +57,38 @@ def index(request):
 #     else:
 #         return HttpResponseNotFound(f"Не найден знак {sign_zodiac}")
 
+# class Person:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+#
+#     def __str__(self):
+#         return self.name
+
+
+@dataclass
+class Person:
+    name: str
+    age: int
+
+    def __str__(self):
+        return self.name
+
 
 def zodiak_info(request, sign_zodiac: str):
     # response = render_to_string('horoscope/info_zodiac.html')
-    return render(request, 'horoscope/info_zodiac.html')
+    description = dict_zodiac.get(sign_zodiac)
+    data = {
+        'description_zodiak': description,
+        'sign': sign_zodiac,
+        'my_int': 111,
+        'my_float': 233.32434,
+        'my_list': [1, 3, 4, 5],
+        'my_tuple': (1, 2, 3, 4, 5, 6, 7),
+        'my_dict': {'name': 'Jack', 'age': 35},
+        'my_class': Person('Will', 55),
+    }
+    return render(request, 'horoscope/info_zodiac.html', context=data)
 
 
 def zodiak_info_num(request, sign_zodiac: int):
@@ -74,7 +112,7 @@ def type_zodiac_info(request, type_zodiac):
         {li_elements}
     <ul/>
     """
-    #return HttpResponse(type_zodiac_info_html(type_zodiac, reverse))
+    # return HttpResponse(type_zodiac_info_html(type_zodiac, reverse))
     return HttpResponse(response)
 
 
